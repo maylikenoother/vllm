@@ -77,6 +77,12 @@ class Gemma4Config(VerifyAndUpdateConfig):
         with different head dimensions for prefill-decode disaggregation.
         """
         hf_text_config = vllm_config.model_config.hf_text_config
+        use_bidirectional_attention = getattr(hf_text_config, "use_bidirectional_attention", None)
+        if use_bidirectional_attention == "vision":
+            # Enable MM prefix-LM masking so that vision tokens within the same
+            # multimodal group can attend bidirectionally while preserving causal
+            # attention elsewhere.
+            setattr(vllm_config.model_config.hf_config, "is_mm_prefix_lm", True)
         head_dim = getattr(hf_text_config, "head_dim", None)
         global_head_dim = getattr(hf_text_config, "global_head_dim", None)
 
