@@ -27,6 +27,7 @@ def test_gemma4_sets_mm_prefix_lm_for_vision_bidirectional_attention():
 
     Gemma4Config.verify_and_update_config(vllm_config)
 
+    assert getattr(model_config, "is_mm_prefix_lm", False) is True
     assert getattr(hf_config, "is_mm_prefix_lm", False) is True
 
 
@@ -40,4 +41,5 @@ def test_gemma4_does_not_set_mm_prefix_lm_when_not_vision_bidirectional_attentio
 
     Gemma4Config.verify_and_update_config(vllm_config)
 
+    assert hasattr(model_config, "is_mm_prefix_lm") is False
     assert hasattr(hf_config, "is_mm_prefix_lm") is False
