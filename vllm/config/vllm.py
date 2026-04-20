@@ -1467,6 +1467,8 @@ class VllmConfig:
             and not self.model_config.enforce_eager
             and self.compilation_config.cudagraph_mode != CUDAGraphMode.NONE
         ):
+            from vllm.platforms import current_platform
+
             # determine the initial max_cudagraph_capture_size
             max_cudagraph_capture_size = (
                 self.compilation_config.max_cudagraph_capture_size
